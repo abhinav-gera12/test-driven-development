@@ -1,5 +1,5 @@
+import pytest
 from .utils.docker_utils import start_database_container
-import pytest 
 
 @pytest.fixture(scope="session", autouse=True)
 def db_session():

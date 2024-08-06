@@ -1,2 +1,2 @@
-def test_true():
+def test_turuepy():
     assert True
