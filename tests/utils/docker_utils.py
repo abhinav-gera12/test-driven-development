@@ -1,6 +1,7 @@
 import docker
 import docker.errors
 import time
+import os
 
 def is_container_ready(container):
     container.reload()
@@ -23,6 +24,7 @@ def wait_for_stable_status(container, stable_duration=3, interval=1):
 
 def start_database_container():
     client = docker.from_env()
+    scripts_dir = os.path.abspath("./scripts")
     container_name = "test_db"
     
     try:
@@ -43,7 +45,9 @@ def start_database_container():
         "environment": {
             "POSTGRES_USER": "postgres",
             "POSTGRES_PASSWORD": "postgres",
-        }
+        },
+        "volumes": [f"{scripts_dir}:/docker-entrypoint-initdb.d"],
+        "network_mode": "fastapi-development_dev_network"
     }
     
     container = client.containers.run(**container_config)
